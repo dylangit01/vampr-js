@@ -42,38 +42,57 @@ class Vampire {
   // * when comparing Ansel and Sarah, Ansel is the closest common anscestor.
   // * when comparing Ansel and Andrew, Ansel is the closest common anscestor.
 
-  directAncestor(vampire) {
-    if (this.offspring.includes(vampire)) {
-      return true;
-    } else {
-      for (let vamp of this.offspring) {
-        if (vamp.directAncestor(vampire)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   closestCommonAncestor(vampire) {
-    if (this === vampire) {
-      return this;
+    let thisVampire = this;
+    let currVampire = vampire;
+    while (thisVampire) {
+      while (currVampire) {
+        if (thisVampire === currVampire) {
+          return thisVampire
+        };
+        currVampire = currVampire.creator;
+      }
+      currVampire = vampire;
+      thisVampire = thisVampire.creator;
     }
-    let older;
-    let younger;
-    if (this.isMoreSeniorThan(vampire)) {
-      older = this;
-      younger = vampire;
-    } else {
-      older = vampire;
-      younger = this;
-    }
-    if (older.directAncestor(younger)) {
-      return older;
-    } else {
-      return older.creator.closestCommonAncestor(younger);
-    }
+    return null;
   }
 }
-
 module.exports = Vampire;
+
+
+
+
+// recursive way:
+  // directAncestor(vampire) {
+  //   if (this.offspring.includes(vampire)) {
+  //     return true;
+  //   } else {
+  //     for (let vamp of this.offspring) {
+  //       if (vamp.directAncestor(vampire)) {
+  //         return true;
+  //       }
+  //     }
+  //   }
+  //   return false;
+  // }
+
+//   closestCommonAncestor(vampire) {
+//     if (this === vampire) {
+//       return this;
+//     }
+//     let older;
+//     let younger;
+//     if (this.isMoreSeniorThan(vampire)) {
+//       older = this;
+//       younger = vampire;
+//     } else {
+//       older = vampire;
+//       younger = this;
+//     }
+//     if (older.directAncestor(younger)) {
+//       return older;
+//     } else {
+//       return older.creator.closestCommonAncestor(younger);
+//     }
+//   }
